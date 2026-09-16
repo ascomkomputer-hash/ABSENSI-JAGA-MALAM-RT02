@@ -1,0 +1,796 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Absensi Jaga Malam RT 02 RW 15</title>
+
+<!-- Library untuk menyimpan sebagai gambar -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef1f5;
+    color: #222;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 15px;
+}
+
+.header {
+    background: linear-gradient(135deg, #111, #333);
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    border-top: 6px solid #d71920;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.header h2 {
+    margin: 8px 0;
+    color: #fff;
+}
+
+.header p {
+    margin: 5px;
+    opacity: .9;
+}
+
+.form-box {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    margin-bottom: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+input, select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+button {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 5px 3px;
+}
+
+.btn-tambah {
+    background: #198754;
+    color: white;
+}
+
+.btn-print {
+    background: #0d6efd;
+    color: white;
+}
+
+.btn-pdf {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-gambar {
+    background: #6f42c1;
+    color: white;
+}
+
+.btn-text {
+    background: #fd7e14;
+    color: white;
+}
+
+.btn-hapus {
+    background: #212529;
+    color: white;
+}
+
+.button-area {
+    margin-top: 15px;
+}
+
+.rekap {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.08);
+}
+
+.rekap-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.rekap-header h2 {
+    margin-bottom: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th {
+    background: #212529;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background: #f7f7f7;
+}
+
+.hadir {
+    color: green;
+    font-weight: bold;
+}
+
+.ijin {
+    color: #d97706;
+    font-weight: bold;
+}
+
+.sakit {
+    color: #2563eb;
+    font-weight: bold;
+}
+
+.tanpa {
+    color: red;
+    font-weight: bold;
+}
+
+.denda {
+    color: red;
+    font-weight: bold;
+}
+
+.total-box {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.card {
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    background: #f1f3f5;
+}
+
+.card strong {
+    display: block;
+    font-size: 22px;
+    margin-top: 5px;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 13px;
+}
+
+/* AREA CETAK */
+.print-title {
+    display: none;
+}
+
+@media(max-width:700px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .total-box {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .header h1 {
+        font-size: 21px;
+    }
+
+    .header h2 {
+        font-size: 18px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 7px 4px;
+    }
+
+    .button-area button {
+        width: 100%;
+        margin: 4px 0;
+    }
+}
+
+/* CETAK KERTAS */
+@media print {
+
+    body {
+        background: white;
+    }
+
+    .container {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .header {
+        background: white !important;
+        color: black !important;
+        border: 2px solid black;
+        border-top: 6px solid black;
+        box-shadow: none;
+    }
+
+    .header h1,
+    .header h2,
+    .header p {
+        color: black !important;
+    }
+
+    .form-box,
+    .button-area,
+    .footer {
+        display: none !important;
+    }
+
+    .rekap {
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .print-title {
+        display: block;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    table {
+        page-break-inside: auto;
+    }
+
+    tr {
+        page-break-inside: avoid;
+    }
+
+    th {
+        background: #ddd !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .total-box {
+        page-break-inside: avoid;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>ABSENSI JAGA MALAM</h1>
+        <h2>POS KAMLING RT 02 RW 15</h2>
+        <p>Ketertiban • Keamanan • Kebersamaan Warga</p>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-box">
+
+        <h2>📝 Input Absensi</h2>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Nama</label>
+                <input type="text" id="nama" placeholder="Masukkan nama warga">
+            </div>
+
+            <div class="form-group">
+                <label>Hari / Jaga Malam</label>
+                <select id="hari">
+                    <option value="">-- Pilih Hari --</option>
+                    <option>Senin</option>
+                    <option>Selasa</option>
+                    <option>Rabu</option>
+                    <option>Kamis</option>
+                    <option>Jumat</option>
+                    <option>Sabtu</option>
+                    <option>Minggu</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Tanggal</label>
+                <input type="date" id="tanggal">
+            </div>
+
+            <div class="form-group">
+                <label>Keterangan</label>
+                <select id="keterangan">
+                    <option value="Hadir">Hadir</option>
+                    <option value="Ijin">Ijin</option>
+                    <option value="Sakit">Sakit</option>
+                    <option value="Tanpa Keterangan">Tanpa Keterangan</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="button-area">
+
+            <button class="btn-tambah" onclick="tambahData()">
+                ➕ Tambah Absensi
+            </button>
+
+            <button class="btn-print" onclick="window.print()">
+                🖨️ Cetak / Print
+            </button>
+
+            <button class="btn-pdf" onclick="window.print()">
+                📄 Simpan PDF
+            </button>
+
+            <button class="btn-gambar" onclick="simpanGambar()">
+                🖼️ Simpan Gambar
+            </button>
+
+            <button class="btn-text" onclick="simpanText()">
+                📋 Simpan Teks
+            </button>
+
+            <button class="btn-hapus" onclick="hapusSemua()">
+                🗑️ Hapus Semua
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- REKAP -->
+    <div class="rekap" id="areaRekap">
+
+        <div class="print-title">
+            <h2>REKAP ABSENSI JAGA MALAM</h2>
+            <h3>POS KAMLING RT 02 RW 15</h3>
+        </div>
+
+        <div class="rekap-header">
+            <h2>📋 Rekap Absensi</h2>
+            <p>Data Jaga Malam Warga RT 02 RW 15</p>
+        </div>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Hari</th>
+                    <th>Tanggal</th>
+                    <th>Keterangan</th>
+                    <th>Denda</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody id="tabelData"></tbody>
+
+        </table>
+
+
+        <div class="total-box">
+
+            <div class="card">
+                <span>Hadir</span>
+                <strong id="totalHadir">0</strong>
+            </div>
+
+            <div class="card">
+                <span>Ijin</span>
+                <strong id="totalIjin">0</strong>
+            </div>
+
+            <div class="card">
+                <span>Sakit</span>
+                <strong id="totalSakit">0</strong>
+            </div>
+
+            <div class="card">
+                <span>Tanpa Keterangan</span>
+                <strong id="totalTanpa">0</strong>
+            </div>
+
+        </div>
+
+        <div class="card" style="margin-top:10px;">
+            <span>Total Denda</span>
+            <strong class="denda" id="totalDenda">
+                Rp 0
+            </strong>
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+        Sistem Absensi Jaga Malam • RT 02 RW 15
+    </div>
+
+</div>
+
+
+<script>
+
+let dataAbsensi = JSON.parse(
+    localStorage.getItem("absensiRT02RW15")
+) || [];
+
+
+// Tanggal otomatis hari ini
+document.getElementById("tanggal").value =
+    new Date().toISOString().split("T")[0];
+
+
+// Tambah data
+function tambahData() {
+
+    let nama = document.getElementById("nama").value.trim();
+    let hari = document.getElementById("hari").value;
+    let tanggal = document.getElementById("tanggal").value;
+    let keterangan = document.getElementById("keterangan").value;
+
+    if (nama === "") {
+        alert("Nama wajib diisi!");
+        return;
+    }
+
+    if (hari === "") {
+        alert("Silakan pilih hari!");
+        return;
+    }
+
+    if (tanggal === "") {
+        alert("Tanggal wajib diisi!");
+        return;
+    }
+
+    let denda = 0;
+
+    if (keterangan === "Tanpa Keterangan") {
+        denda = 10000;
+    }
+
+    dataAbsensi.push({
+        nama: nama,
+        hari: hari,
+        tanggal: tanggal,
+        keterangan: keterangan,
+        denda: denda
+    });
+
+    localStorage.setItem(
+        "absensiRT02RW15",
+        JSON.stringify(dataAbsensi)
+    );
+
+    tampilkanData();
+
+    document.getElementById("nama").value = "";
+}
+
+
+// Tampilkan data
+function tampilkanData() {
+
+    let tabel = document.getElementById("tabelData");
+
+    tabel.innerHTML = "";
+
+    let hadir = 0;
+    let ijin = 0;
+    let sakit = 0;
+    let tanpa = 0;
+    let totalDenda = 0;
+
+    dataAbsensi.forEach((item, index) => {
+
+        if (item.keterangan === "Hadir") hadir++;
+        if (item.keterangan === "Ijin") ijin++;
+        if (item.keterangan === "Sakit") sakit++;
+        if (item.keterangan === "Tanpa Keterangan") tanpa++;
+
+        totalDenda += item.denda;
+
+        let kelas = "";
+
+        if (item.keterangan === "Hadir") {
+            kelas = "hadir";
+        }
+
+        if (item.keterangan === "Ijin") {
+            kelas = "ijin";
+        }
+
+        if (item.keterangan === "Sakit") {
+            kelas = "sakit";
+        }
+
+        if (item.keterangan === "Tanpa Keterangan") {
+            kelas = "tanpa";
+        }
+
+        let row = document.createElement("tr");
+
+        row.innerHTML = `
+
+            <td>${index + 1}</td>
+
+            <td>
+                <strong>${item.nama}</strong>
+            </td>
+
+            <td>${item.hari}</td>
+
+            <td>${formatTanggal(item.tanggal)}</td>
+
+            <td class="${kelas}">
+                ${item.keterangan}
+            </td>
+
+            <td class="denda">
+                ${item.denda > 0
+                    ? "Rp " + item.denda.toLocaleString("id-ID")
+                    : "-"
+                }
+            </td>
+
+            <td>
+                <button
+                    onclick="hapusData(${index})"
+                    style="background:#dc3545;color:white;">
+                    Hapus
+                </button>
+            </td>
+
+        `;
+
+        tabel.appendChild(row);
+
+    });
+
+
+    document.getElementById("totalHadir").innerText = hadir;
+    document.getElementById("totalIjin").innerText = ijin;
+    document.getElementById("totalSakit").innerText = sakit;
+    document.getElementById("totalTanpa").innerText = tanpa;
+
+    document.getElementById("totalDenda").innerText =
+        "Rp " + totalDenda.toLocaleString("id-ID");
+}
+
+
+// Format tanggal Indonesia
+function formatTanggal(tanggal) {
+
+    if (!tanggal) return "-";
+
+    let d = new Date(tanggal + "T00:00:00");
+
+    return d.toLocaleDateString(
+        "id-ID",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        }
+    );
+}
+
+
+// Hapus satu data
+function hapusData(index) {
+
+    if (
+        confirm("Yakin ingin menghapus data absensi ini?")
+    ) {
+
+        dataAbsensi.splice(index, 1);
+
+        localStorage.setItem(
+            "absensiRT02RW15",
+            JSON.stringify(dataAbsensi)
+        );
+
+        tampilkanData();
+    }
+}
+
+
+// Hapus semua
+function hapusSemua() {
+
+    if (dataAbsensi.length === 0) {
+        alert("Belum ada data.");
+        return;
+    }
+
+    if (
+        confirm(
+            "PERINGATAN!\n\nSemua data absensi akan dihapus.\n\nLanjutkan?"
+        )
+    ) {
+
+        dataAbsensi = [];
+
+        localStorage.removeItem(
+            "absensiRT02RW15"
+        );
+
+        tampilkanData();
+    }
+}
+
+
+// Simpan sebagai teks
+function simpanText() {
+
+    if (dataAbsensi.length === 0) {
+        alert("Belum ada data untuk disimpan.");
+        return;
+    }
+
+    let teks =
+`REKAP ABSENSI JAGA MALAM
+POS KAMLING RT 02 RW 15
+========================================
+
+`;
+
+    dataAbsensi.forEach((item, index) => {
+
+        teks +=
+`${index + 1}. ${item.nama}
+Hari       : ${item.hari}
+Tanggal    : ${formatTanggal(item.tanggal)}
+Keterangan : ${item.keterangan}
+Denda      : Rp ${item.denda.toLocaleString("id-ID")}
+----------------------------------------
+
+`;
+
+    });
+
+
+    let totalDenda = dataAbsensi.reduce(
+        (total, item) => total + item.denda,
+        0
+    );
+
+    teks +=
+`TOTAL DENDA : Rp ${totalDenda.toLocaleString("id-ID")}
+
+Data ini dibuat dari Sistem Absensi
+Jaga Malam RT 02 RW 15.
+`;
+
+
+    let blob = new Blob(
+        [teks],
+        {type: "text/plain"}
+    );
+
+    let url = URL.createObjectURL(blob);
+
+    let a = document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+        "Rekap_Absensi_Jaga_Malam_RT02_RW15.txt";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+
+// Simpan sebagai gambar
+function simpanGambar() {
+
+    if (dataAbsensi.length === 0) {
+        alert("Belum ada data untuk disimpan.");
+        return;
+    }
+
+    let area =
+        document.getElementById("areaRekap");
+
+    html2canvas(area, {
+        scale: 2,
+        backgroundColor: "#ffffff"
+    }).then(canvas => {
+
+        let link =
+            document.createElement("a");
+
+        link.download =
+            "Rekap_Absensi_RT02_RW15.png";
+
+        link.href =
+            canvas.toDataURL("image/png");
+
+        link.click();
+
+    });
+
+}
+
+
+// Tampilkan data ketika halaman dibuka
+tampilkanData();
+
+</script>
+
+</body>
+</html>
+```
